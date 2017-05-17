@@ -51,7 +51,6 @@ var Config = struct {
 
 var (
 	dbName = "mgofun_test"
-	dial   = "localhost"
 )
 
 type Person struct {
