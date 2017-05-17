@@ -42,23 +42,6 @@ func HandLog(c echo.Context) error {
 
 	recordLog.Ip = c.RealIP()
 
-	db := MOBS.DB("sixCity")
-
-	collection := db.C("record_logs")
-
-	//*****集合中元素数目********
-	countNum, err := collection.Count()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Things objects count: ", countNum)
-
-	//一次可以插入多个对象 插入两个Person对象
-	err = collection.Insert(recordLog)
-	if err != nil {
-		panic(err)
-	}
-
 	s := MOBS
 
 	user := new(User)

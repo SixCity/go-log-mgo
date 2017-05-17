@@ -1,7 +1,5 @@
 package main
 
-import "time"
-
 type RecordLogs struct {
 	BaseModel `bson:",inline"`
 	// 记录类型
@@ -21,8 +19,7 @@ type RecordLogs struct {
 	// 服务返回信息
 	Serves string `form:"serves" query:"serves" json:"serves"`
 	// 客户提交信息
-	Client    string `form:"client" query:"client" json:"client"`
-	CreatedAt time.Time
+	Client string `form:"client" query:"client" json:"client"`
 }
 
 type AuthKey struct {
