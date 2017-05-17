@@ -18,50 +18,14 @@ var Config = struct {
 		Host     string `default:"127.0.0.1"`
 		Option   string
 	}
+	MDB struct {
+		Name string
+		URL  string `default:""`
+		Port string
+	}
 }{}
 
-//
-//func Handle(idx int, mpool *mongopool.Pool, done func()) {
-//	defer done()
-//	err := handle(idx, mpool)
-//	if err != nil {
-//		log.Printf("ERROR (worker %d): %v", idx, err)
-//	}
-//}
-//
-//func handle(idx int, mpool *mongopool.Pool) error {
-//	db, err := mpool.Acquire()
-//	if err != nil {
-//		return err
-//	}
-//	defer mpool.Release(db)
-//
-//	log.Printf("Worker %d proceeding.", idx)
-//
-//	err = db.C("foo").Insert(bson.M{"i": idx})
-//	if err != nil {
-//		return err
-//	}
-//
-//	// Slow things down for more informative output.
-//	time.Sleep(500 * time.Millisecond)
-//
-//	return nil
-//}
-
-var (
-	dbName = "mgofun_test"
-)
-
-type Person struct {
-	NAME  string
-	PHONE string
-}
-type Men struct {
-	Persons []Person
-}
-
-var MDBS *mgo.Session
+var MOBS *mgo.Session
 
 func init() {
 
@@ -69,18 +33,11 @@ func init() {
 
 	fmt.Printf("config : %#v", Config)
 
-	uDB := Config.DB
+	MOBS, _ = mgo.Dial("localhost:27017")
 
-	uri := uDB.User + ":" + uDB.Password + "@tcp(" + uDB.Host + ":" + uDB.Port + ")/" + uDB.Name + "?" + uDB.Option
+	MOBS.SetMode(mgo.Monotonic, true)
 
-	fmt.Println(uri)
-
-	MDBS, _ = mgo.Dial("localhost:27017")
-
-	//defer MDBS.Close()
-	MDBS.SetMode(mgo.Monotonic, true)
-
-	//db := MDBS.DB("sixCity")
+	//db := MOBS.DB("sixCity")
 	//
 	//collection := db.C("record_logs")
 	//
@@ -91,16 +48,6 @@ func init() {
 	//}
 	//fmt.Println("Things objects count: ", countNum)
 	//
-	////*******插入元素*******
-	//temp := &Person{
-	//	PHONE: "18811577546",
-	//	NAME:  "zhangzheHero",
-	//}
-	////一次可以插入多个对象 插入两个Person对象
-	//err = collection.Insert(&Person{"Ale", "+55 53 8116 9639"}, temp)
-	//if err != nil {
-	//	panic(err)
-	//}
 
 	//*****查询单条数据*******
 	//result := Person{}

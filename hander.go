@@ -42,7 +42,7 @@ func HandLog(c echo.Context) error {
 
 	recordLog.Ip = c.RealIP()
 
-	db := MDBS.DB("sixCity")
+	db := MOBS.DB("sixCity")
 
 	collection := db.C("record_logs")
 
@@ -59,7 +59,7 @@ func HandLog(c echo.Context) error {
 		panic(err)
 	}
 
-	s := MDBS
+	s := MOBS
 
 	user := new(User)
 	user.Name = "Tom"
@@ -71,13 +71,13 @@ func HandLog(c echo.Context) error {
 	user2.Age = 20
 	user2.Id = bson.NewObjectId()
 
-	cp := NewMgoFun(s, dbName, recordLog)
+	cp := NewMgoFun(s, Config.MDB.Name, recordLog)
 	cp.Create()
 
 	//conduct op
-	op := NewMgoFun(s, dbName, user)
+	op := NewMgoFun(s, Config.MDB.Name, user)
 	op.Create()
-	op = NewMgoFun(s, dbName, user2)
+	op = NewMgoFun(s, Config.MDB.Name, user2)
 	err = op.Create()
 	if err != nil {
 		fmt.Println("Err during save: ", err)
