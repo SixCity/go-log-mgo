@@ -21,7 +21,7 @@ func NewRouter() *echo.Echo {
 	admin := e.Group("/admin", MiddlewareKey)
 	admin.GET("/logs", AdminLogs)
 	admin.GET("/logs/:id", AdminLog)
-	admin.DELETE("/logs/:id", AdminLogDel)
+	admin.DELETE("/logs", AdminLogDel)
 
 	e.HTTPErrorHandler = httpErrorHandler
 

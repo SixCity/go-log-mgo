@@ -133,6 +133,17 @@ func (m *MgoFun) Remove() error {
 	return err
 }
 
+// RemoveDel is  delete
+func (m *MgoFun) RemoveDel() error {
+	id := reflect.ValueOf(m.model).Elem().FieldByName("Id")
+	if !id.IsValid() {
+		return errors.New("No Id defined in model")
+	}
+
+	err := m.collection.Remove(bson.M{"_id": id.Interface()})
+	return err
+}
+
 //GenQuery export mgo.Query for further usage
 func (m *MgoFun) Q() *mgo.Query {
 	return m.findQ()

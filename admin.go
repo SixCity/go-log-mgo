@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 
+	"fmt"
+
 	"github.com/labstack/echo"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -37,12 +39,21 @@ func AdminLog(c echo.Context) error {
 
 func AdminLogDel(c echo.Context) error {
 	recordLog := new(RecordLogs)
+	id := c.FormValue("id")
 
-	c.Bind(recordLog)
+	fmt.Printf(id)
+
+	if id == "" {
+		return c.JSON(http.StatusOK, MapY(0, http.StatusText(200), "id is emp"))
+	}
+
+	recordLog.Id = bson.ObjectIdHex(id)
+
+	fmt.Printf(string(recordLog.Id))
 
 	op := NewMgoFun(MOBS, Config.MDB.Name, recordLog)
 
-	op.Remove()
+	op.RemoveDel()
 
 	return c.JSON(http.StatusOK, MapY(0, http.StatusText(200), recordLog))
 }
