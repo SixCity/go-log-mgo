@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"gopkg.in/mgo.v2/bson"
 )
 
 /*
@@ -30,41 +29,14 @@ func HandLog(c echo.Context) error {
 	if err != nil {
 		fmt.Println("error")
 		fmt.Println(err)
-
-	}
-
-	fmt.Println(recordLog)
-
-	if recordLog.Type == "" || recordLog.Content == "" || recordLog.AppId == "" {
-
-		return c.JSON(422, MapY(422, "error", "Fields are empty"))
 	}
 
 	recordLog.Ip = c.RealIP()
 
 	s := MOBS
 
-	user := new(User)
-	user.Name = "Tom"
-	user.Age = 10
-	user.Id = bson.NewObjectId()
-
-	user2 := new(User)
-	user2.Name = "Jack"
-	user2.Age = 20
-	user2.Id = bson.NewObjectId()
-
 	cp := NewMgoFun(s, Config.MDB.Name, recordLog)
 	cp.Create()
-
-	//conduct op
-	op := NewMgoFun(s, Config.MDB.Name, user)
-	op.Create()
-	op = NewMgoFun(s, Config.MDB.Name, user2)
-	err = op.Create()
-	if err != nil {
-		fmt.Println("Err during save: ", err)
-	}
 
 	return c.JSON(http.StatusOK, MapY(200, "ok", recordLog))
 

@@ -23,6 +23,7 @@ var Config = struct {
 		URL  string `default:""`
 		Port string
 	}
+	Key string
 }{}
 
 var MOBS *mgo.Session

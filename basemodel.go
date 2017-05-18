@@ -19,6 +19,12 @@ type BaseModel struct {
 	RemovedBy string        `bson:"removed_by,omitempty" json:"removed_by"`
 }
 
+// ExModel is ordinary
+type ExModel struct {
+	Id        bson.ObjectId `bson:"_id,omitempty" json:"id"`
+	CreatedAt time.Time     `bson:"created_at,omitempty" json:"created_at"`
+}
+
 // Camel case
 // BaseModel to be emmbered to other struct as audit trail perpurse
 type BaseMod struct {

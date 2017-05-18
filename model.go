@@ -1,15 +1,15 @@
 package main
 
 type RecordLogs struct {
-	BaseModel `bson:",inline"`
+	ExModel `bson:",inline"`
 	// 记录类型
-	Type string `form:"type" query:"type" json:"type"`
+	Name string `form:"name" query:"name" json:"name"`
 	// 客户端栈
 	Model string `form:"model" query:"model" json:"model"`
 	// 客户端记录内容
 	Content string `form:"content" query:"content"  json:"content"`
 	// 客户端名称
-	AppId string `form:"app_id" query:"app_id" json:"app_id"`
+	AppId string `bson:"app_id,omitempty" form:"app_id" query:"app_id" json:"app_id"`
 	// 客户端版本号
 	Version string `form:"version" query:"version" json:"version"`
 	// 客户端 IP

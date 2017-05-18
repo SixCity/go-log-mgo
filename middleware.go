@@ -15,8 +15,8 @@ func MiddlewareTime(next echo.HandlerFunc) echo.HandlerFunc {
 			fmt.Println("authkey error")
 			fmt.Println(err)
 		}
-		if authKey.Key == "" {
-			return c.JSON(400, MapY(400, "error", "Akey are empty"))
+		if authKey.Key != Config.Key {
+			return c.JSON(400, MapY(400, "error", "Akey are error"))
 		}
 
 		return next(c)
@@ -30,8 +30,26 @@ func MiddlewareKey(next echo.HandlerFunc) echo.HandlerFunc {
 		key := c.QueryParam("key")
 		authKey.Key = key
 
-		if authKey.Key == "" {
+		if authKey.Key != Config.Key {
 			return c.JSON(400, MapY(400, "error", "Akey are empty"))
+		}
+
+		return next(c)
+	}
+}
+
+// MiddlewareLog is post log
+func MiddlewareLog(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		//recordLog.Type == "" || recordLog.Content == "" || recordLog.AppId == ""
+		name := c.FormValue("name")
+		content := c.FormValue("content")
+		appId := c.FormValue("app_id")
+		version := c.FormValue("version")
+
+		if name == "" || content == "" || appId == "" || version == "" {
+			return c.JSON(400, MapY(400, "error", "Aname are empty"))
 		}
 
 		return next(c)

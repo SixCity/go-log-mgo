@@ -12,3 +12,6 @@ mdb:
   name: logman
   url:  127.0.0.1
   port: 27017
+
+
+key: 123
