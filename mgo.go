@@ -53,7 +53,7 @@ func getModelName(m interface{}) string {
 	return c
 }
 
-//Create
+//Create is ...
 func (m *MgoFun) Create() error {
 	//generate new object Id
 	id := reflect.ValueOf(m.model).Elem().FieldByName("Id")
@@ -64,7 +64,7 @@ func (m *MgoFun) Create() error {
 	return err
 }
 
-//General Save method
+//Save is General Save method
 func (m *MgoFun) Save() error {
 	id := reflect.ValueOf(m.model).Elem().FieldByName("Id")
 	x := reflect.ValueOf(m.model).Elem().FieldByName("UpdatedAt")
@@ -73,7 +73,7 @@ func (m *MgoFun) Save() error {
 	return err
 }
 
-//General Save method
+//SaveWithoutTime is General Save method
 func (m *MgoFun) SaveWithoutTime() error {
 	id := reflect.ValueOf(m.model).Elem().FieldByName("Id")
 	_, err := m.collection.Upsert(bson.M{"_id": id.Interface()}, bson.M{"$set": m.model})

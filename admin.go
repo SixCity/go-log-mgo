@@ -34,12 +34,17 @@ func AdminLog(c echo.Context) error {
 	op.Query = bson.M{"_id": recordLog.Id}
 	op.GetByQ()
 
+	if recordLog.Name == "" {
+		return c.JSON(400, MapY(400, "error", "fuck you"))
+	}
+
 	return c.JSON(http.StatusOK, MapY(0, http.StatusText(200), recordLog))
 }
 
 func AdminLogDel(c echo.Context) error {
 	recordLog := new(RecordLogs)
-	id := c.FormValue("id")
+	//id := c.FormValue("id")
+	id := c.Param("id")
 
 	fmt.Printf(id)
 

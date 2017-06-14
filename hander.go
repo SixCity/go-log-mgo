@@ -31,6 +31,15 @@ func HandLog(c echo.Context) error {
 		fmt.Println(err)
 	}
 
+	name := recordLog.Name
+	content := recordLog.Content
+	appId := recordLog.AppId
+	version := recordLog.Version
+
+	if name == "" || content == "" || appId == "" || version == "" {
+		return c.JSON(400, MapY(400, "error", "Aname are empty"))
+	}
+
 	recordLog.Ip = c.RealIP()
 
 	s := MOBS

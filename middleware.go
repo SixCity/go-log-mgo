@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 
 	"github.com/labstack/echo"
@@ -9,14 +10,15 @@ import (
 // MiddlewareTime is auth key
 func MiddlewareTime(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		authKey := new(AuthKey)
-		err := c.Bind(authKey)
-		if err != nil {
-			fmt.Println("authkey error")
-			fmt.Println(err)
-		}
-		if authKey.Key != Config.Key {
-			return c.JSON(400, MapY(400, "error", "Akey are error"))
+		authKey := c.QueryParam("iskey")
+		decodeBytesKey, err := base64.StdEncoding.DecodeString(authKey)
+
+		fmt.Printf(authKey)
+
+		fmt.Print("\n")
+
+		if err != nil || string(decodeBytesKey) != Config.Key {
+			return c.JSON(400, MapY(400, "error", "A iskey are error"))
 		}
 
 		return next(c)
@@ -26,12 +28,15 @@ func MiddlewareTime(next echo.HandlerFunc) echo.HandlerFunc {
 // MiddlewareKey is auth key
 func MiddlewareKey(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		authKey := new(AuthKey)
-		key := c.QueryParam("key")
-		authKey.Key = key
+		authKey := c.QueryParam("iskey")
+		decodeBytesKey, err := base64.StdEncoding.DecodeString(authKey)
 
-		if authKey.Key != Config.Key {
-			return c.JSON(400, MapY(400, "error", "Akey are empty"))
+		fmt.Printf(authKey)
+
+		fmt.Print("\n")
+
+		if err != nil || string(decodeBytesKey) != Config.Key {
+			return c.JSON(400, MapY(400, "error", "A admin iskey are error"))
 		}
 
 		return next(c)
@@ -41,12 +46,19 @@ func MiddlewareKey(next echo.HandlerFunc) echo.HandlerFunc {
 // MiddlewareLog is post log
 func MiddlewareLog(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
+		authKey := new(RecordLogs)
+		err := c.Bind(authKey)
+		if err != nil {
+			fmt.Println("RecordLogs error")
+			fmt.Println(err)
+		}
 
+		fmt.Print("\n")
 		//recordLog.Type == "" || recordLog.Content == "" || recordLog.AppId == ""
-		name := c.FormValue("name")
-		content := c.FormValue("content")
-		appId := c.FormValue("app_id")
-		version := c.FormValue("version")
+		name := authKey.Name
+		content := authKey.Content
+		appId := authKey.AppId
+		version := authKey.Version
 
 		if name == "" || content == "" || appId == "" || version == "" {
 			return c.JSON(400, MapY(400, "error", "Aname are empty"))

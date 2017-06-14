@@ -15,13 +15,13 @@ func NewRouter() *echo.Echo {
 	// api 开放路由组
 	api := e.Group("/api", MiddlewareTime)
 	api.POST("/time", HandTime)
-	api.POST("/log", HandLog, MiddlewareLog)
+	api.POST("/log", HandLog)
 
 	// admin 管理组
-	admin := e.Group("/admin", MiddlewareKey)
+	admin := e.Group("/admin/api", MiddlewareKey)
 	admin.GET("/logs", AdminLogs)
 	admin.GET("/logs/:id", AdminLog)
-	admin.DELETE("/logs", AdminLogDel)
+	admin.DELETE("/logs/:id", AdminLogDel)
 
 	e.HTTPErrorHandler = httpErrorHandler
 
